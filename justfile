@@ -69,9 +69,9 @@ clean:
     rm -rf bin/
     rm -f src/*.os
     rm -f thirdparty/lame/libmp3lame/*.os
-    rm -f thirdparty/basis_universal/**/*.os
     rm -f .sconsign.dblite
     rm -rf test/output/
+    cd thirdparty/basis_universal && git clean -fd
     @echo "Cleaned build artifacts"
 
 # Clean and rebuild
