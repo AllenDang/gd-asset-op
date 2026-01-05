@@ -54,16 +54,16 @@ converter.conversion_completed.connect(_on_completed)
 converter.conversion_progress.connect(_on_progress)
 
 # Convert image to KTX2 (async)
-var task_id = converter.image_to_ktx2("res://texture.png", "res://texture.ktx2", 128, true)
+var task_id = converter.image_to_ktx2("/path/to/texture.png", "/path/to/texture.ktx2", 128, true)
 
 # Convert WAV to MP3 (async)
-var task_id = converter.audio_to_mp3("res://sound.wav", "res://sound.mp3", 192)
+var task_id = converter.audio_to_mp3("/path/to/sound.wav", "/path/to/sound.mp3", 192)
 
 # Convert GLB textures to KTX2 (async)
-var task_id = converter.glb_textures_to_ktx2("res://model.glb", "res://model_optimized.glb")
+var task_id = converter.glb_textures_to_ktx2("/path/to/model.glb", "/path/to/model_optimized.glb")
 
 # Normalize audio volume (async)
-var task_id = converter.normalize_audio("res://sound.wav", "res://sound_normalized.wav", -14.0, -1.0)
+var task_id = converter.normalize_audio("/path/to/sound.wav", "/path/to/sound_normalized.wav", -14.0, -1.0)
 
 # Signal handlers
 func _on_completed(task_id: int, source: String, output: String, error: int, message: String):
@@ -80,20 +80,20 @@ func _on_progress(task_id: int, source: String, progress: float):
 
 ```gdscript
 # Probe GLB file
-var glb_info = AssetProbe.probe_glb("res://model.glb")
+var glb_info = AssetProbe.probe_glb("/path/to/model.glb")
 print("Faces: ", glb_info.face_count)
 print("Vertices: ", glb_info.vertex_count)
 print("AABB: ", glb_info.aabb)
 print("Animations: ", glb_info.animations)
 
 # Probe KTX2 file
-var ktx2_info = AssetProbe.probe_ktx2("res://texture.ktx2")
+var ktx2_info = AssetProbe.probe_ktx2("/path/to/texture.ktx2")
 print("Size: ", ktx2_info.width, "x", ktx2_info.height)
 print("Mip levels: ", ktx2_info.mip_levels)
 print("Compressed: ", ktx2_info.is_compressed)
 
 # Probe audio file (MP3 only)
-var audio_info = AssetProbe.probe_audio("res://sound.mp3", true)
+var audio_info = AssetProbe.probe_audio("/path/to/sound.mp3", true)
 print("Duration: ", audio_info.duration, "s")
 print("Sample rate: ", audio_info.sample_rate)
 print("Peak dB: ", audio_info.peak_db)
