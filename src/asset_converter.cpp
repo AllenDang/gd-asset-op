@@ -250,11 +250,7 @@ static bool read_file_to_vector(const char *path, std::vector<uint8_t> &data) {
     file.seekg(0, std::ios::beg);
 
     data.resize(size);
-    if (!file.read(reinterpret_cast<char*>(data.data()), size)) {
-        return false;
-    }
-
-    return true;
+    return static_cast<bool>(file.read(reinterpret_cast<char*>(data.data()), size));
 }
 
 // Helper to write vector to file
@@ -658,7 +654,7 @@ void AssetConverter::_convert_glb_textures_to_ktx2(Ref<ConversionTask> task) {
         return;
     }
 
-    uint32_t magic = *(uint32_t*)&glb_data[0];
+    uint32_t magic = *(uint32_t*)glb_data.data();
     uint32_t version = *(uint32_t*)&glb_data[4];
     // uint32_t total_length = *(uint32_t*)&glb_data[8];
 

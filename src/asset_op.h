@@ -25,7 +25,7 @@ public:
     static AssetOP *get_singleton();
 
     AssetOP();
-    ~AssetOP();
+    ~AssetOP() override;
 
     // Get converter instance (singleton)
     Ref<AssetConverter> get_converter();

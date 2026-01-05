@@ -22,11 +22,9 @@ void AssetProbe::_bind_methods() {
     ClassDB::bind_static_method("AssetProbe", D_METHOD("probe_audio", "file_path", "analyze_volume"), &AssetProbe::probe_audio, DEFVAL(false));
 }
 
-AssetProbe::AssetProbe() {
-}
+AssetProbe::AssetProbe() = default;
 
-AssetProbe::~AssetProbe() {
-}
+AssetProbe::~AssetProbe() = default;
 
 // Helper function to compute volume statistics
 static void compute_volume_stats(const float *samples, size_t sample_count, int channels, float &peak_db, float &rms_db) {
@@ -288,7 +286,7 @@ Dictionary AssetProbe::probe_ktx2(const String &file_path) {
 
     // Read header fields
     uint32_t vk_format = file->get_32();
-    uint32_t type_size = file->get_32();
+    file->get_32(); // type_size (unused)
     uint32_t pixel_width = file->get_32();
     uint32_t pixel_height = file->get_32();
     uint32_t pixel_depth = file->get_32();

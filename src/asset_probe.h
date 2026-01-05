@@ -16,7 +16,7 @@ protected:
 
 public:
     AssetProbe();
-    ~AssetProbe();
+    ~AssetProbe() override;
 
     // Probe methods
     static Dictionary probe_glb(const String &file_path);

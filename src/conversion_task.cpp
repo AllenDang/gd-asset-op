@@ -51,8 +51,7 @@ ConversionTask::ConversionTask() {
     error = OK;
 }
 
-ConversionTask::~ConversionTask() {
-}
+ConversionTask::~ConversionTask() = default;
 
 // Getters
 int ConversionTask::get_id() const { return id; }

@@ -43,7 +43,7 @@ protected:
 
 public:
     ConversionTask();
-    ~ConversionTask();
+    ~ConversionTask() override;
 
     // Getters
     int get_id() const;

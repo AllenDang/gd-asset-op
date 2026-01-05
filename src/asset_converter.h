@@ -60,7 +60,7 @@ protected:
 
 public:
     AssetConverter();
-    ~AssetConverter();
+    ~AssetConverter() override;
 
     // Conversion methods (all async)
     int image_to_ktx2(const String &source_path, const String &output_path, int quality = 128, bool mipmaps = true);
