@@ -1,0 +1,60 @@
+---
+# clang-tidy configuration for gd-asset-op GDExtension
+# Run: clang-tidy src/*.cpp -- $(cat compile_flags.txt)
+# Or use the lint.sh script
+
+Checks: >
+  -*,
+  bugprone-*,
+  clang-analyzer-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  -bugprone-branch-clone,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-narrowing-conversions,
+  -bugprone-unhandled-self-assignment,
+  -clang-analyzer-deadcode.DeadStores,
+  -clang-analyzer-optin.portability.UnixAPI,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -modernize-avoid-c-arrays,
+  -modernize-use-auto,
+  -modernize-use-equals-default,
+  -modernize-use-nodiscard,
+  -modernize-use-override,
+  -modernize-use-trailing-return-type,
+  -performance-enum-size,
+  -performance-unnecessary-value-param,
+  -readability-braces-around-statements,
+  -readability-container-data-pointer,
+  -readability-else-after-return,
+  -readability-function-cognitive-complexity,
+  -readability-identifier-length,
+  -readability-identifier-naming,
+  -readability-implicit-bool-conversion,
+  -readability-isolate-declaration,
+  -readability-magic-numbers,
+  -readability-simplify-boolean-expr,
+  -readability-uppercase-literal-suffix,
+  -readability-use-std-min-max
+
+WarningsAsErrors: ''
+
+HeaderFilterRegex: 'src/.*\.h$'
+
+CheckOptions:
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.MethodCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberPrefix
+    value: '_'
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+  - key: modernize-use-nullptr.NullMacros
+    value: 'NULL'
+  - key: performance-unnecessary-value-param.AllowedTypes
+    value: 'String;StringName;Variant;Array;Dictionary'
