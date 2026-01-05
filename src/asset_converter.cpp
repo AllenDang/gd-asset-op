@@ -1344,8 +1344,8 @@ void AssetConverter::convert_batch(const TypedArray<ConversionTask> &tasks) {
     is_batch_mode = true;
     batch_results.clear();
 
-    for (int i = 0; i < tasks.size(); i++) {
-        Ref<ConversionTask> task = tasks[i];
+    for (const auto &variant : tasks) {
+        Ref<ConversionTask> task = variant;
         if (task.is_valid()) {
             task->set_id(next_task_id++);
             task_queue.push_back(task);
@@ -1361,11 +1361,11 @@ void AssetConverter::convert_batch(const TypedArray<ConversionTask> &tasks) {
 
 bool AssetConverter::cancel(int task_id) {
     queue_mutex->lock();
-    for (int i = 0; i < task_queue.size(); i++) {
-        if (task_queue[i]->get_id() == task_id) {
-            task_queue[i]->set_status(ConversionTask::CANCELLED);
-            task_queue[i]->set_error(ERR_SKIP);
-            task_queue[i]->set_error_message("Task cancelled");
+    for (auto &task : task_queue) {
+        if (task->get_id() == task_id) {
+            task->set_status(ConversionTask::CANCELLED);
+            task->set_error(ERR_SKIP);
+            task->set_error_message("Task cancelled");
             queue_mutex->unlock();
             return true;
         }
@@ -1376,10 +1376,10 @@ bool AssetConverter::cancel(int task_id) {
 
 void AssetConverter::cancel_all() {
     queue_mutex->lock();
-    for (int i = 0; i < task_queue.size(); i++) {
-        task_queue[i]->set_status(ConversionTask::CANCELLED);
-        task_queue[i]->set_error(ERR_SKIP);
-        task_queue[i]->set_error_message("Task cancelled");
+    for (auto &task : task_queue) {
+        task->set_status(ConversionTask::CANCELLED);
+        task->set_error(ERR_SKIP);
+        task->set_error_message("Task cancelled");
     }
     queue_mutex->unlock();
 }
