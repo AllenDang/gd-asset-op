@@ -1,0 +1,6 @@
+[submodule "godot-cpp"]
+	path = godot-cpp
+	url = https://github.com/godotengine/godot-cpp.git
+[submodule "thirdparty/basis_universal"]
+	path = thirdparty/basis_universal
+	url = https://github.com/BinomialLLC/basis_universal.git

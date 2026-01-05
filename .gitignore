@@ -1,0 +1,38 @@
+# Godot
+.godot/
+
+# Build outputs
+bin/
+*.o
+*.os
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.framework
+.sconsign.dblite
+*.pyc
+__pycache__/
+
+# Test outputs
+test/output/
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
