@@ -10,9 +10,8 @@
 #include "basisu_comp.h"
 #include "basisu_uastc_enc.h"
 
-// Image loading (using basis universal's built-in loaders)
-#include "pvpngreader.h"
-#include "jpgd.h"
+// Image loading with stb_image (supports PNG, JPEG, BMP, TGA, GIF, PSD, HDR, PIC)
+#include "stb_image.h"
 
 // Audio processing with dr_libs
 #include "dr_wav.h"
@@ -295,41 +294,23 @@ void AssetConverter::_convert_image_to_ktx2(Ref<ConversionTask> task) {
     task->set_progress(0.2f);
     call_deferred("_emit_progress", task->get_id(), task->get_source_path(), task->get_progress());
 
-    // Load image using basis universal's image loader
-    basisu::image img;
-    String lower_path = task->get_source_path().to_lower();
+    // Load image using stb_image (supports PNG, JPEG, BMP, TGA, GIF, PSD, HDR, PIC)
+    int width, height, channels;
+    uint8_t *image_data = stbi_load_from_memory(
+        file_data.data(), (int)file_data.size(),
+        &width, &height, &channels, 4);  // Force RGBA output
 
-    if (lower_path.ends_with(".png")) {
-        // Load PNG using basisu::load_png
-        if (!basisu::load_png(file_data.data(), file_data.size(), img, nullptr)) {
-            task->set_status(ConversionTask::FAILED);
-            task->set_error(ERR_INVALID_DATA);
-            task->set_error_message("Failed to decode PNG image");
-            return;
-        }
-    } else if (lower_path.ends_with(".jpg") || lower_path.ends_with(".jpeg")) {
-        // Load JPEG
-        int width, height, actual_comps;
-        uint8_t *jpeg_data = jpgd::decompress_jpeg_image_from_memory(
-            file_data.data(), (int)file_data.size(),
-            &width, &height, &actual_comps, 4);
-
-        if (!jpeg_data) {
-            task->set_status(ConversionTask::FAILED);
-            task->set_error(ERR_INVALID_DATA);
-            task->set_error_message("Failed to decode JPEG image");
-            return;
-        }
-
-        img.resize(width, height);
-        memcpy(img.get_ptr(), jpeg_data, width * height * 4);
-        ::free(jpeg_data);
-    } else {
+    if (!image_data) {
         task->set_status(ConversionTask::FAILED);
         task->set_error(ERR_INVALID_DATA);
-        task->set_error_message("Unsupported image format (only PNG and JPEG supported)");
+        task->set_error_message(String("Failed to decode image: ") + stbi_failure_reason());
         return;
     }
+
+    basisu::image img;
+    img.resize(width, height);
+    memcpy(img.get_ptr(), image_data, width * height * 4);
+    stbi_image_free(image_data);
 
     // Check for cancellation
     if (task->get_status() == ConversionTask::CANCELLED) {
@@ -797,33 +778,20 @@ void AssetConverter::_convert_glb_textures_to_ktx2(Ref<ConversionTask> task) {
             continue;
         }
 
-        // Determine image format and load
-        basisu::image img;
-        bool loaded = false;
+        // Load image using stb_image (supports PNG, JPEG, BMP, TGA, GIF, PSD, HDR, PIC)
+        int width, height, channels;
+        uint8_t *decoded_data = stbi_load_from_memory(
+            image_data, (int)image_size,
+            &width, &height, &channels, 4);  // Force RGBA output
 
-        // PNG magic: 89 50 4E 47
-        if (image_size >= 4 && image_data[0] == 0x89 && image_data[1] == 0x50 &&
-            image_data[2] == 0x4E && image_data[3] == 0x47) {
-            loaded = basisu::load_png(image_data, image_size, img, nullptr);
-        }
-        // JPEG magic: FF D8 FF
-        else if (image_size >= 3 && image_data[0] == 0xFF && image_data[1] == 0xD8 && image_data[2] == 0xFF) {
-            int width, height, actual_comps;
-            uint8_t *jpeg_data = jpgd::decompress_jpeg_image_from_memory(
-                image_data, (int)image_size,
-                &width, &height, &actual_comps, 4);
-
-            if (jpeg_data) {
-                img.resize(width, height);
-                memcpy(img.get_ptr(), jpeg_data, width * height * 4);
-                ::free(jpeg_data);
-                loaded = true;
-            }
-        }
-
-        if (!loaded) {
+        if (!decoded_data) {
             continue;
         }
+
+        basisu::image img;
+        img.resize(width, height);
+        memcpy(img.get_ptr(), decoded_data, width * height * 4);
+        stbi_image_free(decoded_data);
 
         // Setup basis encoder
         basisu::basis_compressor_params params;

@@ -6,7 +6,7 @@ A Godot 4.x GDExtension for asset conversion and metadata probing.
 
 ### Asset Conversion (Async)
 
-- **Image to KTX2** - Convert PNG/JPEG to GPU-compressed KTX2 (UASTC + zstd)
+- **Image to KTX2** - Convert PNG/JPEG/BMP/TGA/GIF/PSD/HDR/PIC to GPU-compressed KTX2 (UASTC + zstd)
 - **Audio to MP3** - Convert WAV to MP3 with configurable bitrate
 - **GLB Texture Optimization** - Convert embedded textures in GLB files to KTX2
 - **Audio Normalization** - Normalize audio volume to target LUFS
@@ -106,7 +106,7 @@ print("LUFS: ", audio_info.lufs)
 
 | Method | Description |
 |--------|-------------|
-| `image_to_ktx2(source, output, quality=128, mipmaps=true)` | Convert PNG/JPEG to KTX2 |
+| `image_to_ktx2(source, output, quality=128, mipmaps=true)` | Convert image to KTX2 (PNG/JPEG/BMP/TGA/GIF/PSD/HDR/PIC) |
 | `audio_to_mp3(source, output, bitrate=192)` | Convert WAV to MP3 |
 | `glb_textures_to_ktx2(source, output="", quality=128, mipmaps=true)` | Optimize GLB textures |
 | `normalize_audio(source, output, target_db=-14.0, peak_limit_db=-1.0)` | Normalize audio |
@@ -151,6 +151,7 @@ just
 
 - [godot-cpp](https://github.com/godotengine/godot-cpp) - Godot C++ bindings
 - [basis_universal](https://github.com/BinomialLLC/basis_universal) - KTX2/UASTC texture compression
+- [stb_image](https://github.com/nothings/stb) - Image loading (PNG, JPEG, BMP, TGA, GIF, PSD, HDR, PIC)
 - [LAME](https://lame.sourceforge.io/) - MP3 encoding
 - [dr_libs](https://github.com/mackron/dr_libs) - Audio decoding (WAV, MP3)
 - [cgltf](https://github.com/jkuhlmann/cgltf) - GLB/GLTF parsing

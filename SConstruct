@@ -7,6 +7,7 @@ env = SConscript("godot-cpp/SConstruct")
 # Add source files and thirdparty includes
 env.Append(CPPPATH=[
     "src/",
+    "thirdparty/stb/",
     "thirdparty/dr_libs/",
     "thirdparty/cgltf/",
     "thirdparty/basis_universal/transcoder/",
@@ -56,6 +57,9 @@ sources += encoder_sources
 
 # zstd for KTX2 compression
 sources += ["thirdparty/basis_universal/zstd/zstd.c"]
+
+# stb_image for image loading
+sources += ["thirdparty/stb/stb_image_impl.cpp"]
 
 # LAME MP3 encoder
 lame_sources = [

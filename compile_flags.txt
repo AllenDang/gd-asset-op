@@ -1,6 +1,7 @@
 -std=c++17
 -xc++
 -Isrc/
+-Ithirdparty/stb/
 -Igodot-cpp/include/
 -Igodot-cpp/gen/include/
 -Igodot-cpp/gdextension/
