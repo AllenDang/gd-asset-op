@@ -93,10 +93,11 @@ lint fix="":
 clean:
     rm -rf bin/
     rm -f src/*.os
-    rm -f thirdparty/lame/libmp3lame/*.os
     rm -f .sconsign.dblite
     rm -rf test/output/
-    cd thirdparty/basis_universal && git clean -fd
+    cd godot-cpp && git clean -fdx
+    cd thirdparty/basis_universal && git clean -fdx
+    cd thirdparty/lame && git clean -fdx
     @echo "Cleaned build artifacts"
 
 # Clean and rebuild
